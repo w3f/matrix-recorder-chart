@@ -15,4 +15,3 @@ RUN yarn add https://packages.matrix.org/npm/olm/olm-3.1.4.tgz
 RUN yarn add node-gyp
 
 RUN mkdir -p w3f_matrix_log && mkdir -p w3f_matrix_log/localstorage
-RUN bash -c 'touch w3f_matrix_log/localstorage/{accessToken,baseUrl,deviceId,userId}'
