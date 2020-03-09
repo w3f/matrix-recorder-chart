@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Matrix Recorder - {{room_name}} ({{room_id}})</title>
+   <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <h1>{{room_name}}</h1>
+
+  <div class="timeline-main">
+  {{#timeline}}
+
+    {{#membership_invite}}
+    <!-- invite event -->
+    <div class="timeline membership-invite">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender mxid">{{sender}}</div> <div class="timeline-body">has invited <span class="mxid">{{targetFallbackSender}}</span>.</div></p>
+    </div>
+
+    {{/membership_invite}}
+
+
+    {{#membership_join}}
+    <!-- join event -->
+    <div class="timeline membership-join">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender mxid">{{targetFallbackSender}}</div> <div class="timeline-body">has joined.</div></p>
+    </div>
+
+    {{/membership_join}}
+
+
+    {{#membership_leave}}
+    <!-- leave event -->
+    <div class="timeline membership-leave">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender mxid">{{targetFallbackSender}}</div> <div class="timeline-body">has left or declined the invitation.</div></p>
+    </div>
+
+    {{/membership_leave}}
+
+
+    {{#message}}
+    <!-- generic message event -->
+    <div class="timeline message">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender"><span class="mxid">{{sender}}</span></div> <div class="timeline-body">{{{bodyFormat}}}</div></p>
+    </div>
+
+    {{/message}}
+
+
+    {{#message_image}}
+    <!-- image received event -->
+    <div class="timeline message-image">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender"><span class="mxid">{{sender}}</span></div>
+         <div class="timeline-body">
+           <a href="{{file}}"><img class="timeline-image" src="{{thumbnail_file}}"><br />
+             {{{bodyFormat}}}</a>
+         </div>
+      </p>
+    </div>
+
+    {{/message_image}}
+
+
+    {{#message_video}}
+    <!-- video received event -->
+    <div class="timeline message-video">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender"><span class="mxid">{{sender}}</span></div>
+        <div class="timeline-body">
+         <video class="timeline-video" src="{{file}}" poster="{{thumbnail_file}}" controls></video><br />
+          {{{bodyFormat}}}</p>
+        </div>
+    </div>
+
+    {{/message_video}}
+
+
+    {{#message_file}}
+    <!-- file received event -->
+    <div class="timeline message-video">
+      <p><div class="timeline-date">[{{dateFormat}}]</div> <div class="timeline-sender"><span class="mxid">{{sender}}</span></div>
+      <div class="timeline-body">
+        <a href="{{file}}">{{{bodyFormat}}}</a>
+      </div></p>
+    </div>
+
+    {{/message_file}}
+
+  {{/timeline}}
+  </div>
+
+  <p>Internal room ID: {{room_id}}</p>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "matrix-recorder.fullname" . }}
+  {{- if hasKey .Values "namespace" }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
+  labels:
+    {{- include "matrix-recorder.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "matrix-recorder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "matrix-recorder.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
+      containers:
+        - name: matrix-recorder
+          image: {{ .Values.image.name }}:{{ .Chart.Version }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+               cpu: {{ .Values.resources.limits.cpu }}
+               memory: {{ .Values.resources.limits.memory }}
+            requests:
+               cpu: {{ .Values.resources.requests.cpu }}
+               memory: {{ .Values.resources.requests.memory }}
+
+          volumeMounts:
+          - name: baseUrl-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/baseUrl
+            subPath: baseUrl
+            readOnly: true
+          - name: accessToken-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/accessToken
+            subPath: accessToken
+            readOnly: true
+          - name: deviceId-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/deviceId
+            subPath: deviceId
+            readOnly: true
+          - name: userId-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/userId
+            subPath: userId
+            readOnly: true
+
+      volumes:
+        - name: baseUrl-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-baseUrl
+        - name: accessToken-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-accessToken
+        - name: deviceId-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-deviceId
+        - name: userId-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-userId
