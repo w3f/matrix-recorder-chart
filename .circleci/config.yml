@@ -19,3 +19,38 @@ jobs:
       - run:
           command: |
             /scripts/publish-image.sh web3f/matrix-recorder
+
+  publishChart:
+    docker:
+      - image: web3f/ci-commons:v2.0.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            /scripts/publish-chart.sh web3f/matrix-recorder
+
+
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - buildImage:
+          filters:
+            tags:
+              only: /.*/
+      - publishImage:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+          requires:
+            - buildImage
+      - publishChart:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - publishImage
