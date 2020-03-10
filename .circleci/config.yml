@@ -10,6 +10,22 @@ jobs:
       - run:
           command: |
             /scripts/build-image.sh web3f/matrix-recorder .
+
+  chartLint:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - run:
+          description: helm lint
+          command: |
+            helm lint ./charts/matrix-recorder
+      - run:
+          description: helm template
+          command: |
+            helm template ./charts/matrix-recorder
+
+
   publishImage:
     docker:
       - image: web3f/ci-commons:v2.0.1
@@ -30,7 +46,16 @@ jobs:
           command: |
             /scripts/publish-chart.sh web3f/matrix-recorder
 
-
+  deploy:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - run:
+          environment:
+            GCP_REGION: europe-west3
+          command: |
+            ./scripts/deploy.sh
 
 workflows:
   version: 2
@@ -40,17 +65,35 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - chartLint:
+          filters:
+            tags:
+              only: /.*/
+      - integrationTests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - buildImage
+            - chartLint
       - publishImage:
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
-          requires:
-            - buildImage
       - publishChart:
           filters:
+            branches:
+              ignore: /.*/
             tags:
-              only: /.*/
+              only: /v[0-9]+(\.[0-9]+)*/
+      - deploy:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
           requires:
             - publishImage
+            - publishChart
