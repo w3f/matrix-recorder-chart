@@ -3,7 +3,7 @@ version: 2
 jobs:
   buildImage:
     docker:
-      - image: web3f/ci-commons:v2.0.0
+      - image: web3f/ci-commons:v2.0.1
     steps:
       - checkout
       - setup_remote_docker
@@ -12,7 +12,7 @@ jobs:
             /scripts/build-image.sh web3f/matrix-recorder .
   publishImage:
     docker:
-      - image: web3f/ci-commons:v2.0.0
+      - image: web3f/ci-commons:v2.0.1
     steps:
       - checkout
       - setup_remote_docker
@@ -22,7 +22,7 @@ jobs:
 
   publishChart:
     docker:
-      - image: web3f/ci-commons:v2.0.0
+      - image: web3f/ci-commons:v2.0.1
     steps:
       - checkout
       - setup_remote_docker
