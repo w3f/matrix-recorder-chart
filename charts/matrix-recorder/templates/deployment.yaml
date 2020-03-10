@@ -30,34 +30,7 @@ spec:
                cpu: {{ .Values.resources.requests.cpu }}
                memory: {{ .Values.resources.requests.memory }}
 
-          volumeMounts:
-          - name: baseUrl-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/baseUrl
-            subPath: baseUrl
-            readOnly: true
-          - name: accessToken-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/accessToken
-            subPath: accessToken
-            readOnly: true
-          - name: deviceId-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/deviceId
-            subPath: deviceId
-            readOnly: true
-          - name: userId-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/userId
-            subPath: userId
-            readOnly: true
-
       volumes:
-        - name: baseUrl-volume
+        - name: credentials-volume
           secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-baseUrl
-        - name: accessToken-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-accessToken
-        - name: deviceId-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-deviceId
-        - name: userId-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-userId
+            secretName: {{ include "matrix-recorder.fullname" . }}-credentials
