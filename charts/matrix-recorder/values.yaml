@@ -18,7 +18,7 @@ image:
   name: web3f/matrix-recorder
   pullPolicy: IfNotPresent
 service:
-  port:
+  port: 7777
 resources:
   limits:
      cpu: 200m

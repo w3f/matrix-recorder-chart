@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "matrix-recorder.fullname" . }}
   {{- if hasKey .Values "namespace" }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default  "default"}}
   {{- end }}
   labels:
     {{- include "matrix-recorder.labels" . | nindent 4 }}
