@@ -69,13 +69,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - integrationTests:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - buildImage
-            - chartLint
       - publishImage:
           filters:
             branches:
