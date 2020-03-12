@@ -25,6 +25,17 @@ jobs:
           command: |
             helm template ./charts/matrix-recorder
 
+  integrationTests:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          description: run integration tests
+          command: |
+            /scripts/integration-tests.sh
 
   publishImage:
     docker:
@@ -41,7 +52,6 @@ jobs:
       - image: web3f/ci-commons:v2.0.1
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           command: |
             /scripts/publish-chart.sh web3f/matrix-recorder
@@ -52,8 +62,6 @@ jobs:
     steps:
       - checkout
       - run:
-          environment:
-            GCP_REGION: europe-west3
           command: |
             ./scripts/deploy.sh
 
@@ -69,6 +77,13 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - integrationTests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - buildImage
+            - chartLint
       - publishImage:
           filters:
             branches:
@@ -76,6 +91,7 @@ workflows:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
           requires:
+            - integrationTests
             - buildImage
       - publishChart:
           filters:
@@ -84,6 +100,7 @@ workflows:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
           requires:
+            - integrationTests
             - chartLint
       - deploy:
           filters:

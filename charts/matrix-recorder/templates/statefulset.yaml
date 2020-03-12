@@ -6,6 +6,10 @@ metadata:
     {{- include "matrix-recorder.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 3
+  serviceName: {{ .Values.domain }}
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       {{- include "matrix-recorder.selectorLabels" . | nindent 6 }}
@@ -79,3 +83,16 @@ spec:
         - name: w3f-matrix-logs-volume
           persistentVolumeClaim:
             claimName: matrix-recorder-pvc
+        {{ if eq .Values.environment "ci" }}
+        - name: w3f-matrix-logs-volume
+          emptyDir: {}
+        {{ else }}
+    volumeClaimTemplates:
+    - metadata:
+        name: w3f-matrix-logs-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+        {{ end }}

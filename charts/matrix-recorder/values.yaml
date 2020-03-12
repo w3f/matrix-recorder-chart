@@ -1,15 +1,14 @@
 # Default values for bastion.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
+environment: deployment
 replicaCount: 1
-namespace:
 
 baseUrl:
 accessToken:
 deviceId:
 userId:
-
+domain:
 serviceAccount:
   create: true
   name: matrix-recorder
@@ -18,6 +17,7 @@ image:
   name: web3f/matrix-recorder
   pullPolicy: IfNotPresent
 service:
+  type: ClusterIP
   port: 7777
 resources:
   limits:

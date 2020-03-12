@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: matrix-recorder
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/limit-rps: "10"
+spec:
+  tls:
+  - hosts:
+      - {{ .Values.domain | default  "my-domain" }}
+    secretName: kusama-faucet-tls
+  rules:
+  - host: {{ .Values.domain | default  "my-domain" }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: matrix-recorder
+          servicePort: {{ .Values.service.port }}
