@@ -17,7 +17,7 @@ integration_test_sequence(){
 }
 
 matrixrecorder_integration(){
-  wait_pod_ready matrix-recorder-0 default 2/2
+  wait_pod_ready matrix-recorder-0 default 1/2
 }
 
 
