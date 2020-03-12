@@ -7,7 +7,7 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 3
-  serviceName: {{ .Values.domain }}
+  serviceName: {{ .Values.domain | default  "my-domain" }}
   updateStrategy:
     type: RollingUpdate
   selector:
@@ -81,18 +81,4 @@ spec:
           secret:
             secretName: {{ include "matrix-recorder.fullname" . }}-credentials-userid
         - name: w3f-matrix-logs-volume
-          persistentVolumeClaim:
-            claimName: matrix-recorder-pvc
-        {{ if eq .Values.environment "ci" }}
-        - name: w3f-matrix-logs-volume
           emptyDir: {}
-        {{ else }}
-    volumeClaimTemplates:
-    - metadata:
-        name: w3f-matrix-logs-volume
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
-        {{ end }}

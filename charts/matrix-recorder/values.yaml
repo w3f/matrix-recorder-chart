@@ -1,14 +1,14 @@
 # Default values for bastion.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-environment: deployment
+environment: ci
 replicaCount: 1
 
 baseUrl:
 accessToken:
 deviceId:
-userId:
-domain:
+userId: 
+domain: "testnet"
 serviceAccount:
   create: true
   name: matrix-recorder
