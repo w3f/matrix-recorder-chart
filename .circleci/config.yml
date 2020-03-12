@@ -61,6 +61,10 @@ workflows:
   version: 2
   test_and_deploy:
     jobs:
+      - chartLint:
+          filters:
+            tags:
+              only: /.*/
       - buildImage:
           filters:
             tags:
@@ -73,10 +77,6 @@ workflows:
               only: /v[0-9]+(\.[0-9]+)*/
           requires:
             - buildImage
-      - chartLint:
-          filters:
-            tags:
-              only: /.*/
       - publishChart:
           filters:
             branches:
