@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "matrix-recorder.fullname" . }}
+  labels:
+    {{- include "matrix-recorder.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "matrix-recorder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "matrix-recorder.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
+      containers:
+        - name: recorder-to-html
+          image: {{ .Values.image.name }}:{{ .Chart.Version }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+               cpu: {{ .Values.resources.limits.cpu }}
+               memory: {{ .Values.resources.limits.memory }}
+            requests:
+               cpu: {{ .Values.resources.requests.cpu }}
+               memory: {{ .Values.resources.requests.memory }}
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "node recorder-to-html.js ./w3f_matrix_log" ]
+
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
+
+        - name: matrix-recorder
+          image: {{ .Values.image.name }}:{{ .Chart.Version }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+               cpu: {{ .Values.resources.limits.cpu }}
+               memory: {{ .Values.resources.limits.memory }}
+            requests:
+               cpu: {{ .Values.resources.requests.cpu }}
+               memory: {{ .Values.resources.requests.memory }}
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "node matrix-recorder.js ./w3f_matrix_log" ]
+
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
+          - name: credentials-accesstoken-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/accessToken
+            subPath: accessToken
+          - name: credentials-baseurl-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/baseUrl
+            subPath: baseUrl
+          - name: credentials-deviceid-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/deviceId
+            subPath: deviceId
+          - name: credentials-userid-volume
+            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/userId
+            subPath: userId
+
+
+      volumes:
+        - name: credentials-accesstoken-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-accesstoken
+        - name: credentials-baseurl-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-baseurl
+        - name: credentials-deviceid-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-deviceid
+        - name: credentials-userid-volume
+          secret:
+            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-userid
+        - name: w3f-matrix-logs-volume
+          persistentVolumeClaim:
+            claimName: matrix-recorder-pvc

@@ -1,4 +1,4 @@
-FROM node:9
+FROM node:8.11
 
 RUN set -ex \
     && apt-get clean \
@@ -11,7 +11,6 @@ RUN git clone https://gitlab.com/argit/matrix-recorder.git
 
 WORKDIR matrix-recorder
 
-RUN yarn add https://packages.matrix.org/npm/olm/olm-3.1.4.tgz
-RUN yarn add node-gyp
-
+RUN yarn add olm
+RUN yarn install --verbose --frozen-lockfile --optional
 RUN mkdir -p w3f_matrix_log && mkdir -p w3f_matrix_log/localstorage
