@@ -30,8 +30,8 @@ spec:
             requests:
                cpu: {{ .Values.resources.requests.cpu }}
                memory: {{ .Values.resources.requests.memory }}
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "node matrix-recorder.js ./w3f_matrix_log" ]
+          command: ["/bin/sh"]
+          args: ["-c", "node matrix-recorder.js ./w3f_matrix_log" ]
 
           volumeMounts:
           - name: w3f-matrix-logs-volume
@@ -58,8 +58,8 @@ spec:
             requests:
                cpu: {{ .Values.resources.requests.cpu }}
                memory: {{ .Values.resources.requests.memory }}
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "node recorder-to-html.js ./w3f_matrix_log" ]
+          command: ["/bin/sh"]
+          args: ["-c", "node recorder-to-html.js ./w3f_matrix_log" ]
 
           volumeMounts:
           - name: w3f-matrix-logs-volume
