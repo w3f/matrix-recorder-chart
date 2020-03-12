@@ -20,23 +20,6 @@ spec:
     spec:
       serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
       containers:
-        - name: recorder-to-html
-          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            limits:
-               cpu: {{ .Values.resources.limits.cpu }}
-               memory: {{ .Values.resources.limits.memory }}
-            requests:
-               cpu: {{ .Values.resources.requests.cpu }}
-               memory: {{ .Values.resources.requests.memory }}
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "node recorder-to-html.js ./w3f_matrix_log" ]
-
-          volumeMounts:
-          - name: w3f-matrix-logs-volume
-            mountPath: /matrix-recorder/w3f_matrix_log
-
         - name: matrix-recorder
           image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -65,7 +48,22 @@ spec:
           - name: credentials-userid-volume
             mountPath: /matrix-recorder/w3f_matrix_log/localstorage/userId
             subPath: userId
+        - name: recorder-to-html
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+               cpu: {{ .Values.resources.limits.cpu }}
+               memory: {{ .Values.resources.limits.memory }}
+            requests:
+               cpu: {{ .Values.resources.requests.cpu }}
+               memory: {{ .Values.resources.requests.memory }}
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "ls" ]
 
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
 
       volumes:
         - name: credentials-accesstoken-volume
