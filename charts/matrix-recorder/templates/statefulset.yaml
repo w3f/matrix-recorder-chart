@@ -59,7 +59,7 @@ spec:
                cpu: {{ .Values.resources.requests.cpu }}
                memory: {{ .Values.resources.requests.memory }}
           command: [ "/bin/bash", "-c", "--" ]
-          args: [ "ls" ]
+          args: [ "node recorder-to-html.js ./w3f_matrix_log" ]
 
           volumeMounts:
           - name: w3f-matrix-logs-volume
