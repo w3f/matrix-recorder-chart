@@ -2,20 +2,25 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 environment: ci
+
 replicaCount: 1
 
 baseUrl:
 accessToken:
 deviceId:
-userId: 
+userId:
+
 domain: "testnet"
+
 serviceAccount:
   create: true
   name: matrix-recorder
 
 image:
-  name: web3f/matrix-recorder
+  repo: web3f/matrix-recorder
+  tag: latest
   pullPolicy: IfNotPresent
+
 service:
   type: ClusterIP
   port: 7777

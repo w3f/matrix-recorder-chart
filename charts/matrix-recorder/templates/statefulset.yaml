@@ -21,7 +21,7 @@ spec:
       serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
       containers:
         - name: recorder-to-html
-          image: {{ .Values.image.name }}:{{ .Chart.Version }}
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             limits:
@@ -38,7 +38,7 @@ spec:
             mountPath: /matrix-recorder/w3f_matrix_log
 
         - name: matrix-recorder
-          image: {{ .Values.image.name }}:{{ .Chart.Version }}
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             limits:
