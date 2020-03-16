@@ -31,9 +31,6 @@ spec:
           - /bin/sh
           - -c
           - node recorder-to-html.js ./w3f_matrix_log
-
-        - name: w3f-matrix-logs-volume
-          mountPath: /matrix-recorder/w3f_matrix_log
           volumeMounts:
           - name: w3f-matrix-logs-volume
             mountPath: /matrix-recorder/w3f_matrix_log
