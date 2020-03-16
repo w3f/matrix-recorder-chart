@@ -32,7 +32,6 @@ spec:
           - /bin/sh
           - -c
           - node recorder-to-html.js ./w3f_matrix_log
-          restartPolicy: OnFailure
           volumeMounts:
           - name: w3f-matrix-logs-volume
             mountPath: /matrix-recorder/w3f_matrix_log
@@ -40,8 +39,6 @@ spec:
         - name: matrix-recorder
           image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-  {{ toYaml .Values.resources | indent 10 }}
           command: ["/bin/sh"]
           args: ["-c", "node matrix-recorder.js ./w3f_matrix_log" ]
 
