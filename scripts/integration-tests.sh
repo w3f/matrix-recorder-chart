@@ -13,13 +13,7 @@ run_tests() {
 
 integration_test_sequence(){
   echo Running integration tests...
-  matrixrecorder_integration
 }
-
-matrixrecorder_integration(){
-  wait_pod_ready matrix-recorder-0 default 1/2
-}
-
 
 teardown() {
     helmfile delete
