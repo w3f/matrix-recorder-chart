@@ -14,3 +14,5 @@ WORKDIR matrix-recorder
 RUN yarn add olm
 RUN yarn install --verbose --frozen-lockfile --optional
 RUN mkdir -p w3f_matrix_log && mkdir -p w3f_matrix_log/localstorage
+
+ENTRYPOINT ["node", "matrix-recorder.js", "w3f_matrix_log"]

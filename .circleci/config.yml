@@ -9,7 +9,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-            /scripts/build-image.sh web3f/matrix-recorder .
+            /scripts/build-image.sh web3f/matrix-recorder ./MatrixRecorderDockerfile
 
   chartLint:
     docker:
