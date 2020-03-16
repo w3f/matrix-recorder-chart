@@ -24,18 +24,6 @@ spec:
             mountPath: /matrix-recorder/w3f_matrix_log
 
       volumes:
-        - name: credentials-accesstoken-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-accesstoken
-        - name: credentials-baseurl-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-baseurl
-        - name: credentials-deviceid-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-deviceid
-        - name: credentials-userid-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-userid
         {{ if ne .Values.environment "ci"}}
         - name: w3f-matrix-logs-volume
           persistentVolumeClaim:

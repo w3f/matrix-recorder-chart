@@ -49,6 +49,7 @@ spec:
             mountPath: /matrix-recorder/w3f_matrix_log/localstorage/userId
             subPath: userId
 
+
       volumes:
         - name: credentials-accesstoken-volume
           secret:
