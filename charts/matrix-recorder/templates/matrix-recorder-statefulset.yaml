@@ -17,14 +17,6 @@ spec:
     spec:
       serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
       containers:
-        - name: nginx
-          image: nginx:1.8
-          ports:
-          - containerPort: 80
-          volumeMounts:
-          - name: w3f-matrix-logs-volume
-            mountPath: /usr/share/nginx
-
         - name: matrix-recorder
           image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}

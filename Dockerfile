@@ -14,7 +14,6 @@ WORKDIR matrix-recorder
 RUN yarn add olm
 RUN yarn install --verbose --frozen-lockfile --optional
 RUN mkdir -p w3f_matrix_log && mkdir -p w3f_matrix_log/localstorage
-RUN touch /matrix-recorder/w3f_matrix_log/messages.sqlite
-RUN chmod 755 /matrix-recorder/w3f_matrix_log/messages.sqlite
+ADD w3f_matrix_log w3f_matrix_log
 
 ENTRYPOINT ["node", "matrix-recorder.js", "w3f_matrix_log"]
