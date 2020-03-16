@@ -28,8 +28,6 @@ spec:
         - name: matrix-recorder
           image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh"]
-          args: ["-c", "node matrix-recorder.js ./w3f_matrix_log" ]
 
           volumeMounts:
           - name: w3f-matrix-logs-volume
