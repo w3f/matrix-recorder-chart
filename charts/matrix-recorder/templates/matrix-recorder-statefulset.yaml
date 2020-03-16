@@ -16,6 +16,10 @@ spec:
         {{- include "matrix-recorder.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
+      initContainers:
+      - name: set-file-perm
+        image: busybox:1.28
+        command: ['sh', '-c', 'chmod 755 /matrix-recorder/w3f_matrix_log/messages.sqlite']
       containers:
         - name: nginx
           image: nginx:1.8
