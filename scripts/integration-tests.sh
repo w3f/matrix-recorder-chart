@@ -20,12 +20,10 @@ main(){
     fi
 
     /scripts/build-helm.sh \
-        --set environment=ci \
         --set baseUrl="${BASE_URL}" \
         --set accessToken="${W3F_BACKUPBOT_ACCESS_TOKEN}" \
         --set deviceId="${W3F_BACKUPBOT_DEVICE_ID}" \
         --set userId="${W3F_BACKUPBOT_USER_ID}" \
-        --set image.tag=${CIRCLE_SHA1} \
         matrix-recorder \
         ./charts/matrix-recorder
 

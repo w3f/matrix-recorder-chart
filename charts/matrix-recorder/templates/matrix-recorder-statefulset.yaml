@@ -25,17 +25,6 @@ spec:
           - name: w3f-matrix-logs-volume
             mountPath: /usr/share/nginx
 
-        - name: recorder-to-html
-          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-          - /bin/sh
-          - -c
-          - node recorder-to-html.js ./w3f_matrix_log
-          volumeMounts:
-          - name: w3f-matrix-logs-volume
-            mountPath: /matrix-recorder/w3f_matrix_log
-
         - name: matrix-recorder
           image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
