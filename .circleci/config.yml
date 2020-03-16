@@ -31,21 +31,25 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+        environment:
+          $BASE_URL: $BASE_URL
+          $ACCESS_TOKEN: $W3F_BACKUPBOT_ACCESS_TOKEN
+          $DEVICE_ID: $W3F_BACKUPBOT_DEVICE_ID
+          $USER_ID: $W3F_BACKUPBOT_USER_ID
       - run:
           description: run integration tests
           command: |
             echo $BASE_URL > /matrix-recorder/w3f_matrix_log/localstorage/baseUrl
+      - run:
           command: |
             echo $W3F_BACKUPBOT_ACCESS_TOKEN > /matrix-recorder/w3f_matrix_log/localstorage/accessToken
+      - run:
           command: |
             echo $W3F_BACKUPBOT_DEVICE_ID > /matrix-recorder/w3f_matrix_log/localstorage/deviceId
+      - run:
           command: |
             echo $W3F_BACKUPBOT_USER_ID > /matrix-recorder/w3f_matrix_log/localstorage/userId
-          environment:
-            $BASE_URL: $BASE_URL
-            $ACCESS_TOKEN: $W3F_BACKUPBOT_ACCESS_TOKEN
-            $DEVICE_ID: $W3F_BACKUPBOT_DEVICE_ID
-            $USER_ID: $W3F_BACKUPBOT_USER_ID
+      - run:
           command: |
             /scripts/integration-tests.sh
 
