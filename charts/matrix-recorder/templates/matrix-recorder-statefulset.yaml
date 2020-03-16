@@ -75,6 +75,11 @@ spec:
         - name: credentials-userid-volume
           secret:
             secretName: {{ include "matrix-recorder.fullname" . }}-credentials-userid
+{{ if ne .Values.environment "ci"}}
         - name: w3f-matrix-logs-volume
           persistentVolumeClaim:
             claimName: w3f-matrix-logs-volume-claim
+{{ else }}
+        - name: w3f-matrix-logs-volume
+          emptyDir: {}
+{{ end }}

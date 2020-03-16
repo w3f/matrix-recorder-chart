@@ -33,18 +33,6 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-            echo $BASE_URL > /matrix-recorder/w3f_matrix_log/localstorage/baseUrl
-      - run:
-          command: |
-            echo $W3F_BACKUPBOT_ACCESS_TOKEN > /matrix-recorder/w3f_matrix_log/localstorage/accessToken
-      - run:
-          command: |
-            echo $W3F_BACKUPBOT_DEVICE_ID > /matrix-recorder/w3f_matrix_log/localstorage/deviceId
-      - run:
-          command: |
-            echo $W3F_BACKUPBOT_USER_ID > /matrix-recorder/w3f_matrix_log/localstorage/userId
-      - run:
-          command: |
             /scripts/integration-tests.sh
 
   publishImage:

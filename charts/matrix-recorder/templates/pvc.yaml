@@ -1,11 +1,13 @@
+{{ if ne .Values.environment "ci"}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: w3f-matrix-logs-volume-claim
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
   storageClassName: do-block-storage
+{{ end }}
