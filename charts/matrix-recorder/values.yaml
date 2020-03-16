@@ -7,17 +7,14 @@ accessToken:
 deviceId:
 userId:
 
-domain: "testnet"
-
 serviceAccount:
   create: true
   name: matrix-recorder
 
 image:
   repo: web3f/matrix-recorder
-  tag: v0.0.3
+  tag: v0.0.10
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
-  port: 7777

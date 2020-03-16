@@ -6,7 +6,7 @@ source /scripts/bootstrap-helm.sh
 
 run_tests() {
     echo Running tests...
-    wait_pod_ready matrix-recorder-0 default 2/2
+    wait_pod_ready matrix-recorder-0
 }
 
 teardown() {
