@@ -37,21 +37,19 @@ spec:
           command: ["/bin/sh"]
           args: ["-c", "/matrix-recorder/scripts/initbot.sh" ]
 
-
       containers:
-        - name: matrix-recorder
-          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-
-          volumeMounts:
-          - name: w3f-matrix-logs-volume
-            mountPath: /matrix-recorder/w3f_matrix_log
         - name: nginx
           image: nginx:1.17.9
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
           - name: w3f-matrix-logs-volume
             mountPath: /usr/share/nginx
+        - name: matrix-recorder
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
 
       volumes:
 {{ if ne .Values.environment "ci"}}

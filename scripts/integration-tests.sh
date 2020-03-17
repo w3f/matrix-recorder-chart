@@ -2,25 +2,31 @@
 
 source /scripts/common.sh
 source /scripts/bootstrap-helm.sh
+set -ex
 
 
 run_tests() {
-    echo Running tests...
-    wait_pod_ready matrix-recorder-0
+  echo Running tests...
+  wait_pod_ready matrix-recorder-0
 }
 
 teardown() {
-    helm delete matrix-recorder
+  helm delete matrix-recorder
 }
 
 main(){
-    if [ -z "$KEEP_W3F_MATRIX_REC" ]; then
-        trap teardown EXIT
-    fi
+  if [ -z "$KEEP_W3F_MATRIX_REC" ]; then
+      trap teardown EXIT
+  fi
+  echo Testing ...
+  kubectl cluster-info dump
+  helm version
+  echo Installing...
+  helm install --set matrixbot.username="${W3F_MATRIXBOT_USERNAME}" --set matrixbot.password="${W3F_MATRIXBOT_PASSWORD}" --set environment="ci" matrix-recorder ./charts/matrix-recorder
 
-    helm install --set matrixbot.username="${W3F_MATRIXBOT_USERNAME}" --set matrixbot.password="${W3F_MATRIXBOT_PASSWORD}" --set environment="ci" matrix-recorder ./charts/matrix-recorder
-
-    run_tests
+  run_tests
+  teardown
 }
 
 main
+set +x
