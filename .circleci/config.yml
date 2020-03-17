@@ -33,7 +33,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-            /scripts/integration-tests.sh
+            /matrix-recorder/scripts/integration-tests.sh
 
   publishImage:
     docker:

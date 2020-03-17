@@ -18,14 +18,9 @@ main(){
         trap teardown EXIT
     fi
 
-    helm install --set baseUrl="${BASE_URL}" --set accessToken="${W3F_BACKUPBOT_ACCESS_TOKEN}" --set deviceId="${W3F_BACKUPBOT_DEVICE_ID}" --set userId="${W3F_BACKUPBOT_USER_ID}" --set environment="ci"matrix-recorder ./charts/matrix-recorder
+    helm install --set matrixbot.username="${W3F_MATRIXBOT_USERNAME}" --set matrixbot.password="${W3F_MATRIXBOT_PASSWORD}" --set environment="ci" matrix-recorder ./charts/matrix-recorder
 
     run_tests
-
-
-
-
-
 }
 
 main

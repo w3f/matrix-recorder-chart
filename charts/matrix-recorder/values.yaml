@@ -2,10 +2,9 @@ environment: production
 
 replicaCount: 1
 
-baseUrl:
-accessToken:
-deviceId:
-userId:
+matrixbot:
+  username:
+  password:
 
 serviceAccount:
   create: true
@@ -13,7 +12,7 @@ serviceAccount:
 
 image:
   repo: web3f/matrix-recorder
-  tag: v0.0.10
+  tag: v0.0.4
   pullPolicy: IfNotPresent
 
 service:

@@ -16,6 +16,28 @@ spec:
         {{- include "matrix-recorder.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
+      initContainers:
+        - name: matrix-recorder-init
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
+          env:
+          - name: W3F_MATRIXBOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "matrix-recorder.fullname" . }}-credentials
+                key: matrixbot-username
+          - name: W3F_MATRIXBOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "matrix-recorder.fullname" . }}-credentials
+                key: matrixbot-password
+          command: ["/bin/sh"]
+          args: ["-c", "/matrix-recorder/scripts/initbot.sh" ]
+
+
       containers:
         - name: matrix-recorder
           image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
@@ -24,33 +46,8 @@ spec:
           volumeMounts:
           - name: w3f-matrix-logs-volume
             mountPath: /matrix-recorder/w3f_matrix_log
-          - name: credentials-accesstoken-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/accessToken
-            subPath: accessToken
-          - name: credentials-baseurl-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/baseUrl
-            subPath: baseUrl
-          - name: credentials-deviceid-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/deviceId
-            subPath: deviceId
-          - name: credentials-userid-volume
-            mountPath: /matrix-recorder/w3f_matrix_log/localstorage/userId
-            subPath: userId
-
 
       volumes:
-        - name: credentials-accesstoken-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-accesstoken
-        - name: credentials-baseurl-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-baseurl
-        - name: credentials-deviceid-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-deviceid
-        - name: credentials-userid-volume
-          secret:
-            secretName: {{ include "matrix-recorder.fullname" . }}-credentials-userid
 {{ if ne .Values.environment "ci"}}
         - name: w3f-matrix-logs-volume
           persistentVolumeClaim:

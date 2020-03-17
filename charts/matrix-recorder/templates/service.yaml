@@ -6,9 +6,5 @@ metadata:
     {{- include "matrix-recorder.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type | default  "ClusterIP" }}
-  ports:
-    - name: matrix-recorder
-      port: {{ .Values.service.port | default  "8080" }}
-      protocol: TCP
   selector:
     {{- include "matrix-recorder.selectorLabels" . | nindent 4 }}
