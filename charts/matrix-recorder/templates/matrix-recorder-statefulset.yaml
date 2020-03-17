@@ -4,6 +4,9 @@ metadata:
   name: {{ include "matrix-recorder.fullname" . }}
   labels:
     {{- include "matrix-recorder.labels" . | nindent 4 }}
+  annotations:
+    codebase: "https://github.com/w3f/matrix-recorder"
+    version: {{ .Chart.Version }}
 spec:
   replicas: {{ .Values.replicaCount }}
   serviceName: "matrix-recorder"
