@@ -18,6 +18,7 @@ image:
 
 service:
   type: ClusterIP
+  port: 80
 
 certificate:
   enabled: true
