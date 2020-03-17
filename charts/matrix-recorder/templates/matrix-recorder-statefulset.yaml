@@ -7,6 +7,17 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   serviceName: "matrix-recorder"
+  revisionHistoryLimit: 5
+  updateStrategy:
+    type: {{ .Values.statefulset.updateStrategy }}
+    {{- if (eq "Recreate" .Values.statefulset.updateStrategy) }}
+    rollingUpdate: null
+    {{- else }}
+    {{- if .Values.statefulset.rollingUpdatePartition }}
+    rollingUpdate:
+      partition: {{ .Values.statefulset.rollingUpdatePartition }}
+    {{- end }}
+    {{- end }}
   selector:
     matchLabels:
       {{- include "matrix-recorder.selectorLabels" . | nindent 6 }}

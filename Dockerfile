@@ -4,7 +4,7 @@ RUN set -ex \
     && apt-get clean \
     && apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends sqlite3 git apt-utils apt-transport-https ca-certificates expect nano
+    && apt-get install -y --no-install-recommends sqlite3 git apt-utils apt-transport-https ca-certificates expect
 
 
 RUN git clone https://gitlab.com/argit/matrix-recorder.git

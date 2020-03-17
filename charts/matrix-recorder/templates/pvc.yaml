@@ -5,7 +5,7 @@ metadata:
   name: w3f-matrix-logs-volume-claim
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 2Gi

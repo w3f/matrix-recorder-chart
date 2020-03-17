@@ -1,19 +1,23 @@
 environment: production
 
 replicaCount: 1
-
+domain: matrix-recorder
 matrixbot:
   username:
   password:
-
+statefulset:
+  updateStrategy: RollingUpdate
 serviceAccount:
   create: true
   name: matrix-recorder
 
 image:
   repo: web3f/matrix-recorder
-  tag: v0.0.4
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
+
+certificate:
+  enabled: true

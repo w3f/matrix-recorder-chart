@@ -1,0 +1,29 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "0 5 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: recorder-to-html-cronjob
+            image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["/bin/bash"]
+            args: ["-c", "/matrix-recorder/scripts/generatehtml.sh"]
+            volumeMounts:
+            - name: w3f-matrix-logs-volume
+              mountPath: /matrix-recorder/w3f_matrix_log
+          restartPolicy: OnFailure
+          volumes:
+{{ if ne .Values.environment "ci"}}
+            - name: w3f-matrix-logs-volume
+              persistentVolumeClaim:
+                claimName: w3f-matrix-logs-volume-claim
+{{ else }}
+            - name: w3f-matrix-logs-volume
+              emptyDir: {}
+{{ end }}
