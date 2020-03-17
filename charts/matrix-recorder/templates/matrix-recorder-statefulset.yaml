@@ -52,6 +52,8 @@ spec:
         - name: nginx
           image: nginx:1.17.9
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.service.port }}
           volumeMounts:
           - name: w3f-matrix-logs-volume
             mountPath: /usr/share/nginx
