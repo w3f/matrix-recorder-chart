@@ -1,7 +1,10 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hello
+  name: recorder-to-html-cronjob
+  annotations:
+    codebase: "https://github.com/w3f/matrix-recorder"
+    version: {{ .Chart.Version }}
 spec:
   schedule: "0 5 * * *"
   jobTemplate:
