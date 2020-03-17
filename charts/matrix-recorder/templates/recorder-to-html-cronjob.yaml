@@ -19,11 +19,10 @@ spec:
               mountPath: /matrix-recorder/w3f_matrix_log
           restartPolicy: OnFailure
           volumes:
-{{ if ne .Values.environment "ci"}}
             - name: w3f-matrix-logs-volume
+{{ if ne .Values.environment "ci"}}
               persistentVolumeClaim:
                 claimName: w3f-matrix-logs-volume-claim
 {{ else }}
-            - name: w3f-matrix-logs-volume
               emptyDir: {}
 {{ end }}
