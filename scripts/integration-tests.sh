@@ -19,7 +19,7 @@ main(){
       trap teardown EXIT
   fi
   echo Installing...
-  helm install --set matrixbot.username="${W3F_MATRIXBOT_USERNAME}" --set matrixbot.password="${W3F_MATRIXBOT_PASSWORD}" --set environment="ci" matrix-recorder ./charts/matrix-recorder
+  helm install --set matrixbot.username="${W3F_MATRIXBOT_USERNAME}" --set matrixbot.password="${W3F_MATRIXBOT_PASSWORD}" --set environment="ci" --set certificate.enabled="false" matrix-recorder ./charts/matrix-recorder
 
   run_tests
 
