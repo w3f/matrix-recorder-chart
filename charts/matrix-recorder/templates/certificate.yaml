@@ -5,7 +5,7 @@ metadata:
   name: matrix-recorder
   namespace: default
 spec:
-  secretName: matrix-recorder-tls
+  secretName: {{ include "matrix-recorder-tls" . }}
   issuerRef:
     name: letsencrypt
   dnsNames:

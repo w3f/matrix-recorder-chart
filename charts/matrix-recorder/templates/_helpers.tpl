@@ -67,3 +67,8 @@ Create the name of the service account to use
 {{- define "matrix-recorder.backend-domain" -}}
 matrix-recorder.{{ .Values.domain }}
 {{- end }}
+
+{{/* Returns the full matrix-recorder-tls secretName */}}
+{{- define "matrix-recorder.tls" -}}
+matrix-recorder-tls-secret.{{ .Values.domain }}
+{{- end }}

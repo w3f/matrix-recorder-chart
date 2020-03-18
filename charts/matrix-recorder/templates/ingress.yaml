@@ -9,7 +9,7 @@ spec:
   tls:
   - hosts:
       - {{ include "matrix-recorder.backend-domain" . }}
-    secretName: matrix-recorder-tls
+    secretName: {{ include "matrix-recorder-tls" . }}
   rules:
   - host: {{ include "matrix-recorder.backend-domain" . }}
     http:
@@ -17,4 +17,4 @@ spec:
       - path: /
         backend:
           serviceName: matrix-recorder-backend
-          servicePort: 80
+          servicePort: {{ .Values.service.port }}
