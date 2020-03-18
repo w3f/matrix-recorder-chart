@@ -63,7 +63,7 @@ Create the name of the service account to use
 {{- end -}}
 
 
-{{/* Returns the full faucet backend domain */}}
+{{/* Returns the full matrix-recorder backend domain */}}
 {{- define "matrix-recorder.backend-domain" -}}
 matrix-recorder.{{ .Values.domain }}
 {{- end }}
