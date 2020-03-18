@@ -2,31 +2,28 @@
 
 source /scripts/common.sh
 source /scripts/bootstrap-helm.sh
+set -ex
 
 
 run_tests() {
-    echo Running tests...
-
-    wait_pod_ready matrix-recorder
-    integration_test_sequence
+  echo Running tests...
+  wait_pod_ready matrix-recorder-0 default 2/2
 }
-
-integration_test_sequence(){
-  echo Running integration tests...
-  matrixrecorder_integration
-}
-
-matrixrecorder_integration(){
-  wait_pod_ready matrix-recorder-0 default 1/2
-}
-
 
 teardown() {
-    helmfile delete
+  helm delete matrix-recorder
 }
 
 main(){
-    run_tests
+  if [ -z "$KEEP_W3F_MATRIX_REC" ]; then
+      trap teardown EXIT
+  fi
+  echo Installing...
+  helm install --set matrixbot.username="${W3F_MATRIXBOT_USERNAME}" --set matrixbot.password="${W3F_MATRIXBOT_PASSWORD}" --set environment="ci" --set certificate.enabled="false" matrix-recorder ./charts/matrix-recorder
+
+  run_tests
+
 }
 
 main
+set +x

@@ -8,13 +8,13 @@ metadata:
 spec:
   tls:
   - hosts:
-      - {{ .Values.domain | default  "my-domain" }}
-    secretName: kusama-faucet-tls
+      - {{ include "matrix-recorder.backend-domain" . }}
+    secretName: {{ include "matrix-recorder-tls" . }}
   rules:
-  - host: {{ .Values.domain | default  "my-domain" }}
+  - host: {{ include "matrix-recorder.backend-domain" . }}
     http:
       paths:
       - path: /
         backend:
-          serviceName: matrix-recorder
+          serviceName: matrix-recorder-backend
           servicePort: {{ .Values.service.port }}

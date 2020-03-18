@@ -1,17 +1,12 @@
-# Default values for bastion.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-environment: ci
+environment: production
 
 replicaCount: 1
-
-baseUrl:
-accessToken:
-deviceId:
-userId:
-
-domain: "testnet"
-
+domain: matrix-recorder
+matrixbot:
+  username:
+  password:
+statefulset:
+  updateStrategy: RollingUpdate
 serviceAccount:
   create: true
   name: matrix-recorder
@@ -23,11 +18,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 7777
-resources:
-  limits:
-     cpu: 200m
-     memory: 128Mi
-  requests:
-     cpu: 100m
-     memory: 128Mi
+  port: 80
+
+certificate:
+  enabled: true

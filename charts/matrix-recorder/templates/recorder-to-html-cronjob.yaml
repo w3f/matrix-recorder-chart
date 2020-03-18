@@ -1,34 +1,31 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "matrix-recorder.fullname" . }}
-  labels:
-    {{- include "matrix-recorder.labels" . | nindent 4 }}
+  name: recorder-to-html-cronjob
+  annotations:
+    codebase: "https://github.com/w3f/matrix-recorder"
+    version: {{ .Chart.Version }}
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "0 5 * * *"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: recorder-to-html
+          - name: recorder-to-html-cronjob
             image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
             imagePullPolicy: {{ .Values.image.pullPolicy }}
-            args:
-            - /bin/sh
-            - -c
-            - node recorder-to-html.js ./w3f_matrix_log
+            command: ["/bin/bash"]
+            args: ["-c", "/matrix-recorder/scripts/generatehtml.sh"]
+            volumeMounts:
+            - name: w3f-matrix-logs-volume
+              mountPath: /matrix-recorder/w3f_matrix_log
           restartPolicy: OnFailure
-          volumeMounts:
-          - name: w3f-matrix-logs-volume
-            mountPath: /matrix-recorder/w3f_matrix_log
-
-      volumes:
-        {{ if ne .Values.environment "ci"}}
-        - name: w3f-matrix-logs-volume
-          persistentVolumeClaim:
-            claimName: w3f-matrix-logs-volume-claim
-        {{ else }}
-        - name: w3f-matrix-logs-volume
-          emptyDir: {}
-        {{ end }}
+          volumes:
+            - name: w3f-matrix-logs-volume
+{{ if ne .Values.environment "ci"}}
+              persistentVolumeClaim:
+                claimName: w3f-matrix-logs-volume-claim
+{{ else }}
+              emptyDir: {}
+{{ end }}

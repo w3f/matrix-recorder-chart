@@ -4,7 +4,7 @@ RUN set -ex \
     && apt-get clean \
     && apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends sqlite git apt-utils apt-transport-https ca-certificates
+    && apt-get install -y --no-install-recommends sqlite3 git apt-utils apt-transport-https ca-certificates expect
 
 
 RUN git clone https://gitlab.com/argit/matrix-recorder.git
@@ -13,4 +13,7 @@ WORKDIR matrix-recorder
 
 RUN yarn add olm
 RUN yarn install --verbose --frozen-lockfile --optional
-RUN mkdir -p w3f_matrix_log && mkdir -p w3f_matrix_log/localstorage
+
+ADD scripts scripts
+
+ENTRYPOINT ["node", "matrix-recorder.js", "w3f_matrix_log"]

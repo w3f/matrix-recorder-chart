@@ -28,12 +28,10 @@ jobs:
   integrationTests:
     docker:
       - image: web3f/ci-commons:v2.0.1
-    resource_class: large
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          description: run integration tests
           command: |
             /scripts/integration-tests.sh
 
@@ -92,7 +90,6 @@ workflows:
               only: /v[0-9]+(\.[0-9]+)*/
           requires:
             - integrationTests
-            - buildImage
       - publishChart:
           filters:
             branches:
@@ -101,7 +98,6 @@ workflows:
               only: /v[0-9]+(\.[0-9]+)*/
           requires:
             - integrationTests
-            - chartLint
       - deploy:
           filters:
             branches:

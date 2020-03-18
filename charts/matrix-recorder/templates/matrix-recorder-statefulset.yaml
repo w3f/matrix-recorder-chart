@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "matrix-recorder.fullname" . }}
+  labels:
+    {{- include "matrix-recorder.labels" . | nindent 4 }}
+  annotations:
+    codebase: "https://github.com/w3f/matrix-recorder"
+    version: {{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: "matrix-recorder"
+  revisionHistoryLimit: 5
+  updateStrategy:
+    type: {{ .Values.statefulset.updateStrategy }}
+    {{- if (eq "Recreate" .Values.statefulset.updateStrategy) }}
+    rollingUpdate: null
+    {{- else }}
+    {{- if .Values.statefulset.rollingUpdatePartition }}
+    rollingUpdate:
+      partition: {{ .Values.statefulset.rollingUpdatePartition }}
+    {{- end }}
+    {{- end }}
+  selector:
+    matchLabels:
+      {{- include "matrix-recorder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "matrix-recorder.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
+      initContainers:
+        - name: matrix-recorder-init
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
+          env:
+          - name: W3F_MATRIXBOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "matrix-recorder.fullname" . }}-credentials
+                key: matrixbot-username
+          - name: W3F_MATRIXBOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "matrix-recorder.fullname" . }}-credentials
+                key: matrixbot-password
+          command: ["/bin/sh"]
+          args: ["-c", "/matrix-recorder/scripts/initbot.sh" ]
+
+      containers:
+        - name: nginx
+          image: nginx:1.17.9
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.service.port }}
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /usr/share/nginx
+        - name: matrix-recorder
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
+
+      volumes:
+        - name: w3f-matrix-logs-volume
+{{ if ne .Values.environment "ci"}}
+          persistentVolumeClaim:
+            claimName: w3f-matrix-logs-volume-claim
+{{ else }}
+          emptyDir: {}
+{{ end }}
