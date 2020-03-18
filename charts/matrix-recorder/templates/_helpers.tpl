@@ -69,6 +69,6 @@ matrix-recorder.{{ .Values.domain }}
 {{- end }}
 
 {{/* Returns the full matrix-recorder-tls secretName */}}
-{{- define "matrix-recorder.tls" -}}
+{{- define "matrix-recorder-tls" -}}
 matrix-recorder-tls-secret.{{ .Values.domain }}
 {{- end }}
