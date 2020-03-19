@@ -75,7 +75,8 @@ spec:
   - metadata:
       name: w3f-matrix-logs-volume
     spec:
-      accessModes: [ "ReadWriteMany" ]
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: do-block-storage
       resources:
         requests:
           storage: 2Gi
