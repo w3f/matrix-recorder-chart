@@ -68,13 +68,10 @@ spec:
             mountPath: /matrix-recorder/w3f_matrix_log
 
       volumes:
-        - name: w3f-matrix-logs-volume
-{{ if ne .Values.environment "ci"}}
-          persistentVolumeClaim:
-            claimName: w3f-matrix-logs-volume-claim
+{{ if eq .Values.environment "ci"}}
+      - name: w3f-matrix-logs-volume
+        emptyDir: {}
 {{ else }}
-          emptyDir: {}
-{{ end }}
   volumeClaimTemplates:
   - metadata:
       name: w3f-matrix-logs-volume-claim
@@ -84,3 +81,4 @@ spec:
       resources:
         requests:
           storage: 2Gi
+{{ end }}
