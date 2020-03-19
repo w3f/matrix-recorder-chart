@@ -25,7 +25,7 @@ spec:
             - name: w3f-matrix-logs-volume
 {{ if ne .Values.environment "ci"}}
               persistentVolumeClaim:
-                claimName: w3f-matrix-logs-volume-claim
+                claimName: w3f-matrix-logs-volume
 {{ else }}
               emptyDir: {}
 {{ end }}
