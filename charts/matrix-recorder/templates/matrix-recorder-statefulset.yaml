@@ -75,3 +75,12 @@ spec:
 {{ else }}
           emptyDir: {}
 {{ end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: w3f-matrix-logs-volume-claim
+    spec:
+      accessModes: [ "ReadWriteMany" ]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 2Gi
