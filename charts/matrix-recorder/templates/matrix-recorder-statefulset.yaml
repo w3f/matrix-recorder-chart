@@ -68,17 +68,11 @@ spec:
             mountPath: /matrix-recorder/w3f_matrix_log
 
       volumes:
-{{ if eq .Values.environment "ci"}}
-      - name: w3f-matrix-logs-volume
-        emptyDir: {}
-{{ else }}
   volumeClaimTemplates:
   - metadata:
       name: w3f-matrix-logs-volume-claim
     spec:
       accessModes: [ "ReadWriteMany" ]
-      storageClassName: do-block-storage
       resources:
         requests:
           storage: 2Gi
-{{ end }}
