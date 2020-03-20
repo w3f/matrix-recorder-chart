@@ -22,10 +22,18 @@ spec:
               mountPath: /matrix-recorder/w3f_matrix_log
           restartPolicy: OnFailure
           volumes:
-            - name: w3f-matrix-logs-volume
-{{ if ne .Values.environment "ci"}}
-              persistentVolumeClaim:
-                claimName: w3f-matrix-logs-volume
+{{ if eq .Values.environment "ci" }}
+          volumes:
+          - name: w3f-matrix-logs-volume
+            emptyDir: {}
 {{ else }}
-              emptyDir: {}
+      volumeClaimTemplates:
+      - metadata:
+          name: w3f-matrix-logs-volume
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: do-block-storage
+          resources:
+            requests:
+              storage: 2Gi
 {{ end }}
