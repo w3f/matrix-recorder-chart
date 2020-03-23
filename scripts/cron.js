@@ -4,7 +4,6 @@ const { spawn } = require("child_process");
 
 cron.schedule('0 5 * * *', () => {
   console.log('running a task every day');
-  const { spawn } = require("child_process");
   const update_html = spawn("./scripts/generatehtml.sh");
 
   update_html.stdout.on("data", data => {
