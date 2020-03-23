@@ -1,4 +1,4 @@
-var cron = require('node-cron');
+const cron = require('node-cron');
 const { spawn } = require("child_process");
 
 
