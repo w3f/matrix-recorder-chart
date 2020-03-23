@@ -7,7 +7,7 @@ set -ex
 
 run_tests() {
   echo Running tests...
-  wait_pod_ready matrix-recorder-0 default 2/2
+  wait_pod_ready matrix-recorder-0 default 3/3
 }
 
 teardown() {
