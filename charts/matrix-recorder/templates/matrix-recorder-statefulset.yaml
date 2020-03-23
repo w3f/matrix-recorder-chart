@@ -66,6 +66,14 @@ spec:
           volumeMounts:
           - name: w3f-matrix-logs-volume
             mountPath: /matrix-recorder/w3f_matrix_log
+        - name: matrix-recorder-cron
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: w3f-matrix-logs-volume
+            mountPath: /matrix-recorder/w3f_matrix_log
+          command: ["/bin/bash"]
+          args: ["-c", "node ./scripts/cron.js"]
 {{ if eq .Values.environment "ci" }}
       volumes:
       - name: w3f-matrix-logs-volume

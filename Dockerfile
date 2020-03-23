@@ -11,7 +11,7 @@ RUN git clone https://gitlab.com/argit/matrix-recorder.git
 
 WORKDIR matrix-recorder
 
-RUN yarn add olm
+RUN yarn add olm node-cron
 RUN yarn install --verbose --frozen-lockfile --optional
 
 ADD scripts scripts
