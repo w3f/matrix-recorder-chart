@@ -1,7 +1,7 @@
 environment: production
 
 replicaCount: 1
-domain: archive.web3.foundation
+domain: web3.foundation
 matrixbot:
   username:
   password:
@@ -21,4 +21,4 @@ service:
   port: 80
 
 certificate:
-  enabled: false
+  enabled: true
