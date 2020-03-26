@@ -2,4 +2,4 @@ apiVersion: v2
 name: matrix-recorder
 description: A Matrix recorder
 type: application
-version: v0.1.0
+version: v0.1.1
