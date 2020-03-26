@@ -2,12 +2,12 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: matrix-recorder
+  name: {{ include "matrix-recorder.fullname" . }}
   namespace: default
 spec:
   secretName: {{ include "matrix-recorder-tls" . }}
   issuerRef:
     name: letsencrypt
   dnsNames:
-  - {{ include "matrix-recorder.backend-domain" . }}
+  - {{ .Values.domain }}
 {{ end }}

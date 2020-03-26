@@ -1,7 +1,7 @@
 environment: production
 
 replicaCount: 1
-domain: web3.foundation
+domain: archive.web3.foundation
 matrixbot:
   username:
   password:
