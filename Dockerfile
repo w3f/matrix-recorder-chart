@@ -8,6 +8,7 @@ RUN set -ex \
 
 
 RUN git clone https://gitlab.com/argit/matrix-recorder.git
+ADD templates /matrix-recorder/templates
 
 WORKDIR matrix-recorder
 

@@ -13,7 +13,7 @@ serviceAccount:
 
 image:
   repo: web3f/matrix-recorder
-  tag: latest
+  tag: v0.2.0
   pullPolicy: IfNotPresent
 
 service:
