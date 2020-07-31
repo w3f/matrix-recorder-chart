@@ -28,6 +28,8 @@ spec:
     metadata:
       labels:
         {{- include "matrix-recorder.selectorLabels" . | nindent 8 }}
+      annotations:
+        backup.velero.io/backup-volumes: w3f-matrix-logs-volume
     spec:
       serviceAccountName: {{ include "matrix-recorder.serviceAccountName" . }}
       initContainers:
